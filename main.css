@@ -85,6 +85,11 @@ footer{
     text-align: center;
     margin:10px;
 }
+.skip-to-content-link {
+    left: 50%;
+    position: absolute;
+    transform: translateY(-100%);
+  }
 
 @media screen  and (min-width: 768px) {
     main article{
