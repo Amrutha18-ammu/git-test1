@@ -150,19 +150,11 @@
          <script src="http://d3js.org/d3.v3.min.js"></script>
         <script>
           var advancedChartData = []
-          var dataSource = {
+          var dataSource = {   
              datasets: [
                {
                  data: [],
-                 backgroundColor: [
-                  '#ffcd56',
-                  '#ff6384',
-                  '#36a2eb',
-                  '#fd6b19',
-                  '#FF8C00',
-                  '#6495ED',
-                  '#A52A2A',
-                 ]
+                 backgroundColor: []
                }
              ],
              labels: [
@@ -179,11 +171,12 @@
           }
 
           function getBudget(){
-            axios.get('http://localhost:3000/budget')
+            axios.get('http://localhost:3000/budgets')
              .then((res) => {
                console.log(res);
                for ( var i = 0; i < res.data.myMonthlyBudget.length; i++) {
-                 dataSource.datasets[0].data[i] = res.data.myMonthlyBudget[i].budget;
+                 dataSource.datasets[0].data[i] = res.data.myMonthlyBudget[i].relatedValue;
+                 dataSource.datasets[0].backgroundColor[i] = res.data.myMonthlyBudget[i].color;
                  dataSource.labels[i] = res.data.myMonthlyBudget[i].title;
                }
                advancedChartData =  res.data.myMonthlyBudget
@@ -231,11 +224,11 @@
 
           var color = d3.scale.ordinal()
           .domain(dataSource.labels)
-          .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+          .range(dataSource.datasets[0].backgroundColor);
 
           function randomData (){
           return advancedChartData.map(function(budgetInfo){
-            return { label: budgetInfo.title, value: budgetInfo.budget }
+            return { label: budgetInfo.title, value: budgetInfo.relatedValue, color: color }
           });
           }
 
